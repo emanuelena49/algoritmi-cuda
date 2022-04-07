@@ -13,8 +13,8 @@
 
 int main() {
 
-	int length = 128;
-	int n = 10;
+	int length = 41;
+	int n = 5;
 
 	int* data = (int*) malloc(length*sizeof(int));
 
@@ -34,7 +34,7 @@ int main() {
 	int* resultParallel = (int*)malloc(n * sizeof(int));
 	histogram_parallel(data, resultParallel, length, n);
 
-	printf("\n\nrisultati\tseriale\tparallelo");
+	printf("\n\nrisultati\tseriale\tparallelo\n");
 	for (size_t i = 0; i < n; i++)
 	{
 		printf("%i:\t%i\t\t%i\n", i, result[i], resultParallel[i]);

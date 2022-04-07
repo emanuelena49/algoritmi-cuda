@@ -80,9 +80,16 @@ void histogram_parallel(int* data, int* occurrences, int dataLength, int n) {
 	// in pratica, è una lista di lunghezza dataLength * n dove 
 	// ogni blocco di dimensione n, corrisponde a quello dove andrà ad 
 	// operare 1 thread per la frequenza osservata su un dato.
+
+	// (adatto dataLength in modo che sia una potenza di due, ci servirà per la procedura di aggregazione)
+	int adjustedDataLength=1;
+	while (adjustedDataLength <= dataLength) {
+		adjustedDataLength = adjustedDataLength * 2;
+	}
+
 	int *occurrencesMatrixDevice;
-	cudaMalloc((void**) &occurrencesMatrixDevice, dataLength * n * sizeof(int));
-	cudaMemset(occurrencesMatrixDevice, 0, dataLength * n * sizeof(int));
+	cudaMalloc((void**) &occurrencesMatrixDevice, adjustedDataLength * n * sizeof(int));
+	cudaMemset(occurrencesMatrixDevice, 0, adjustedDataLength * n * sizeof(int));
 
 	// lancio di dataLength threads, ciascuno di essi (i) analizza
 	// un dato unico (dataDevice[i]) e incrementa il suo valore corrispettivo
@@ -114,18 +121,27 @@ void histogram_parallel(int* data, int* occurrences, int dataLength, int n) {
 	if (DEBUG_SUM_CALC) {
 		cudaMemcpy(o, occurrencesMatrixDevice, n * dataLength * sizeof(int), cudaMemcpyDeviceToHost);
 		printf("\n\nRisultati del calcolo della matrice:\n");
+
+		int cumsum = 0;
+
 		for (int i = 0; i < dataLength; i++) {
 
-			int cumsum = 0;
+			int c = 0;
 
 			printf("%i)\t", i);
 
 			for (int j = 0; j < n; j++) {
 				printf("%i ", o[i * n + j]);
-				cumsum += o[i * n + j];
+				c += o[i * n + j];
 			}
-			printf("\tcumsum: %i\n", cumsum);
+			printf("\ttotale riga: %i\n", c);
+
+			cumsum += c;
 		}
+
+		// NOTA: se è tutto corretto, mi aspetto che la somma delle frequenze
+		// coincida con la dimensione dell'input
+		printf("totale: %i\tval. atteso:%i\n", cumsum, dataLength);
 	}
 
 	// ora aggrego sommando a due a due le liste, fintanto 
@@ -133,7 +149,9 @@ void histogram_parallel(int* data, int* occurrences, int dataLength, int n) {
 
 	// ogni thread si occupa di sommare un singolo termine
 
-	int remainingData = dataLength*n;
+	// (se 
+
+	int remainingData = adjustedDataLength * n;
 
 	while (remainingData > n)
 	{
@@ -160,20 +178,30 @@ void histogram_parallel(int* data, int* occurrences, int dataLength, int n) {
 		// output: (offset/n)/2 liste ancora da operare
 
 		if (DEBUG_SUM_CALC) {
-			cudaMemcpy(o, occurrencesMatrixDevice, n * offset * sizeof(int), cudaMemcpyDeviceToHost);
-			printf("\n\nOffset:%i, lanciati n.threads:%i\n", offset, nBlocks*nThreadsPerBlock);
-			for (int i = 0; i < offset / n; i++) {
+			cudaMemcpy(o, occurrencesMatrixDevice, offset * sizeof(int), cudaMemcpyDeviceToHost);
+			printf("\n\nOffset:%i/%i(reali:%i), lanciati n.threads:%i\n", 
+				offset, adjustedDataLength*n, dataLength*n, 
+				nBlocks*nThreadsPerBlock);
+			int cumsum = 0;
 
-				int cumsum = 0;
+			for (int i = 0; i < offset/n; i++) {
+
+				int c = 0;
 
 				printf("%i)\t", i);
 
 				for (int j = 0; j < n; j++) {
 					printf("%i ", o[i * n + j]);
-					cumsum += o[i * n + j];
+					c += o[i * n + j];
 				}
-				printf("\tcumsum: %i\n", cumsum);
+				printf("\ttotale riga: %i\n", c);
+
+				cumsum += c;
 			}
+
+			// NOTA: se è tutto corretto, mi aspetto che la somma delle frequenze
+			// coincida con la dimensione dell'input
+			printf("totale: %i\tval. atteso:%i\n", cumsum, dataLength);
 		}
 
 		remainingData = offset;
