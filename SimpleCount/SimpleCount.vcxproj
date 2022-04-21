@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7835BFE2-B735-4750-BC91-EC78A33DC4FA}</ProjectGuid>
-    <RootNamespace>CudaAlgorithms</RootNamespace>
+    <ProjectGuid>{3101F0C8-76B5-4B2C-B8AE-7B2C00405946}</ProjectGuid>
+    <RootNamespace>SimpleCount</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -77,7 +77,11 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="simple_count_kernel.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="count_x_v1.cpp" />
+    <ClCompile Include="gestione_errori.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

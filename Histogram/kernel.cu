@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 
-#include <stdio.h>
 #include <memory>
 #include <time.h>
 
@@ -40,3 +39,4 @@ int main() {
 		printf("%i:\t%i\t\t%i\n", i, result[i], resultParallel[i]);
 	}
 }
+
