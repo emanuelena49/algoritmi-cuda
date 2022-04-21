@@ -49,31 +49,41 @@ void randomArray(int* v, int n, int startValue, int endValue) {
 
 int main() {
 
-	int n, start, end, x;
+	int n, start, end, x, nBlocks, threadsPerBlocks;
+	bool defaultOptions = false;
 
-	std::cout << "Inserisci la dimensione del vettore:\t";
+	std::cout << "Inserisci la dimensione del vettore [-1 per usare opzioni di default]:\t";
 	std::cin >> n;
 	// n = 10000;
+	if (n<=0) {
+		n = 10000; start = 0; end = 10; x = 5; nBlocks = 8; threadsPerBlocks = 128;
+		defaultOptions = true;
 
-	std::cout << "\nInserisci l'intervallo dei valori del vettore.\nValore minimo:\t";
-	std::cin >> start;
-	// start = 0;
-	std::cout << "Valore massimo:\t";
-	std::cin >> end;
-	// end = 100;
+		std::cout << "Caricamento opzioni di default: vettore casuale di " << n
+			<< " elementi, compresi in {" << start << ".." << end << "-1}. Conta occorrenze di "
+			<< x << ". Quanto posso scegliere, uso " << nBlocks << " blocchi da "
+			<< threadsPerBlocks << "thread ciascuno.";
+	}
+	else {
+		std::cout << "\nInserisci l'intervallo dei valori del vettore.\nValore minimo:\t";
+		std::cin >> start;
+		// start = 0;
+		std::cout << "Valore massimo:\t";
+		std::cin >> end;
+		// end = 100;
 
-	int* v = (int*) malloc(sizeof(int) * n);
+		std::cout << "\nInserisci valore da cercare:\t";
+		std::cin >> x;
+		// x = 0;
+
+		std::cout << "\nInserisci numero di blocchi e thread per blocco da usare nella computazione parallela V2.\nNumero di Blocchi:\t";
+		std::cin >> nBlocks;
+		std::cout << "Thread per blocco:\t";
+		std::cin >> threadsPerBlocks;
+	}
+
+	int* v = (int*)malloc(sizeof(int) * n);
 	randomArray(v, n, start, end);
-
-	std::cout << "\nInserisci valore da cercare:\t";
-	std::cin >> x;
-	// x = 0;
-
-	std::cout << "\nInserisci numero di blocchi e thread per blocco da usare nella computazione parallela V2.\nNumero di Blocchi:\t";
-	int nBlocks, threadsPerBlocks;
-	std::cin >> nBlocks;
-	std::cout << "Thread per blocco:\t";
-	std::cin >> threadsPerBlocks;
 
 	printf("\nNumero di occorrenze (seriale):%i\t", countOccurrenciesV0(v, n, x));
 	printf("\nNumero di occorrenze (parallelo v1):%i\t", countOccurrenciesV1(v, n, x));
