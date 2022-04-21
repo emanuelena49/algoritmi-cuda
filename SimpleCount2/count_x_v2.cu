@@ -41,7 +41,7 @@ __global__ void countOccurrenciesV2_coalescent_kernel(int* v, int n, int x, int*
 
 	} while (remainingData > 0);
 
-	atomicAdd(result, localIncrement);
+	if (localIncrement > 0) atomicAdd(result, localIncrement);
 }
 
 /// <summary>
@@ -81,7 +81,7 @@ __global__ void countOccurrenciesV2_stride_kernel(int* v, int n, int x, int* res
 
 	} while (remainingData > 0);
 
-	atomicAdd(result, localIncrement);
+	if (localIncrement > 0) atomicAdd(result, localIncrement);
 }
 
 
