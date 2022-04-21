@@ -21,14 +21,18 @@ __global__ void countOccurrenciesV2_coalescent_kernel(int* v, int n, int x, int*
 	int remainingData = n;
 	int round = 0;
 
-	do {
-		__syncthreads();
+	int localIncrement = 0;
 
+	do {
+		
 		int index = tid + round*nThreads;
+
+		__syncthreads();
 
 		if (index < n) {
 			if (v[index] == x) {
-				atomicAdd(result, 1);
+				// atomicAdd(result, 1);
+				localIncrement++;
 			}
 		}
 
@@ -36,6 +40,8 @@ __global__ void countOccurrenciesV2_coalescent_kernel(int* v, int n, int x, int*
 		remainingData -= nThreads;
 
 	} while (remainingData > 0);
+
+	atomicAdd(result, localIncrement);
 }
 
 /// <summary>
@@ -56,14 +62,17 @@ __global__ void countOccurrenciesV2_stride_kernel(int* v, int n, int x, int* res
 	int round = 0;
 	int startPosition = tid * (int) ceil((float)n/(float)nThreads);
 
-	do {
-		__syncthreads();
+	int localIncrement = 0;
 
+	do {
 		int index = startPosition + round;
+
+		__syncthreads();
 
 		if (index < n) {
 			if (v[index] == x) {
-				atomicAdd(result, 1);
+				// atomicAdd(result, 1);
+				localIncrement++;
 			}
 		}
 
@@ -71,6 +80,8 @@ __global__ void countOccurrenciesV2_stride_kernel(int* v, int n, int x, int* res
 		remainingData -= nThreads;
 
 	} while (remainingData > 0);
+
+	atomicAdd(result, localIncrement);
 }
 
 
