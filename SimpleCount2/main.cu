@@ -87,7 +87,8 @@ int main() {
 
 	printf("\nNumero di occorrenze (seriale):%i\t", countOccurrenciesV0(v, n, x));
 	printf("\nNumero di occorrenze (parallelo v1):%i\t", countOccurrenciesV1(v, n, x));
-	printf("\nNumero di occorrenze (parallelo v2):%i\t", countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, COALESCENCE));
+	printf("\nNumero di occorrenze (parallelo v2.1 - accesso coalescente):%i\t", countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, COALESCENCE));
+	printf("\nNumero di occorrenze (parallelo v2.2 - accesso stride):%i\t", countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, STRIDE));
 
 	return 0;
 }

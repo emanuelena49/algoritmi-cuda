@@ -2,6 +2,8 @@
 #include "device_launch_parameters.h"
 
 #include "cuda_errors.cuh"
+#include <math.h>
+
 
 /// <summary>
 /// SOLUZIONE 2.1: 1 thread per dato, uso di atomicAdd.
@@ -35,6 +37,43 @@ __global__ void countOccurrenciesV2_coalescent_kernel(int* v, int n, int x, int*
 
 	} while (remainingData > 0);
 }
+
+/// <summary>
+/// SOLUZIONE 2.2: 1 thread per dato, uso di atomicAdd.
+/// Se i thread non bastano per analizzare la quantità 
+/// di dati richiesta, la strategia d'accesso è in stride 
+/// (ogni thread ha la sua sequenza).
+/// </summary>
+/// <param name="v"></param>
+/// <param name="n"></param>
+/// <param name="x"></param>
+/// <param name="result"></param>
+/// <returns></returns>
+__global__ void countOccurrenciesV2_stride_kernel(int* v, int n, int x, int* result, const int nThreads) {
+	
+	int tid = threadIdx.x + blockIdx.x * blockDim.x;
+	int remainingData = n;
+	int round = 0;
+	int startPosition = tid * (int) ceil((float)n/(float)nThreads);
+
+	do {
+		__syncthreads();
+
+		int index = startPosition + round;
+
+		if (index < n) {
+			if (v[index] == x) {
+				atomicAdd(result, 1);
+			}
+		}
+
+		round++;
+		remainingData -= nThreads;
+
+	} while (remainingData > 0);
+}
+
+
 
 /// <summary>
 /// Strategia di accesso alla memoria in caso di size > nThreads
@@ -75,7 +114,7 @@ int countOccurrenciesV2(int* v, int n, int x, int nBlocks, int threadsPerBlock, 
 		countOccurrenciesV2_coalescent_kernel << <nBlocks, threadsPerBlock >> > (vDevice, n, x, resultDevice, nBlocks * threadsPerBlock);
 	}
 	else {
-		return -1;
+		countOccurrenciesV2_stride_kernel << <nBlocks, threadsPerBlock >> > (vDevice, n, x, resultDevice, nBlocks * threadsPerBlock);
 	}
 	cudaDeviceSynchronize();
 	checkKernelError("kernel v1");
