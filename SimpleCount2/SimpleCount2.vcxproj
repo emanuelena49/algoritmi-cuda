@@ -78,11 +78,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="count_x_v1.cu" />
+    <CudaCompile Include="count_x_v2.cu" />
     <CudaCompile Include="cuda_errors.cu" />
     <CudaCompile Include="main.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="count_x_v1.cuh" />
+    <ClInclude Include="count_x_v2.cuh" />
     <ClInclude Include="cuda_errors.cuh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

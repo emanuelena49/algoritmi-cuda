@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "count_x_v1.cuh"
+#include "count_x_v2.cuh"
 
 
 /// <summary>
@@ -50,26 +51,33 @@ int main() {
 
 	int n, start, end, x;
 
-	printf("Inserisci la dimensione del vettore:\t");
+	std::cout << "Inserisci la dimensione del vettore:\t";
 	std::cin >> n;
 	// n = 10000;
 
-	printf("Inserisci l'intervallo dei valori del vettore:\nValore minimo:\t");
+	std::cout << "\nInserisci l'intervallo dei valori del vettore.\nValore minimo:\t";
 	std::cin >> start;
 	// start = 0;
-	printf("Valore massimo:\t");
+	std::cout << "Valore massimo:\t";
 	std::cin >> end;
 	// end = 100;
 
 	int* v = (int*) malloc(sizeof(int) * n);
 	randomArray(v, n, start, end);
 
-	printf("Inserisci valore da cercare:\t");
+	std::cout << "\nInserisci valore da cercare:\t";
 	std::cin >> x;
 	// x = 0;
 
+	std::cout << "\nInserisci numero di blocchi e thread per blocco da usare nella computazione parallela V2.\nNumero di Blocchi:\t";
+	int nBlocks, threadsPerBlocks;
+	std::cin >> nBlocks;
+	std::cout << "Thread per blocco:\t";
+	std::cin >> threadsPerBlocks;
+
 	printf("\nNumero di occorrenze (seriale):%i\t", countOccurrenciesV0(v, n, x));
-	printf("\nNumero di occorrenze (parallelo):%i\t", countOccurrenciesV1(v, n, x));
+	printf("\nNumero di occorrenze (parallelo v1):%i\t", countOccurrenciesV1(v, n, x));
+	printf("\nNumero di occorrenze (parallelo v2):%i\t", countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, COALESCENCE));
 
 	return 0;
 }

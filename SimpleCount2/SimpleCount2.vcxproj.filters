@@ -5,15 +5,33 @@
     <CudaCompile Include="cuda_errors.cu">
       <Filter>error</Filter>
     </CudaCompile>
+    <CudaCompile Include="count_x_v1.cu">
+      <Filter>count_x_v1</Filter>
+    </CudaCompile>
+    <CudaCompile Include="count_x_v2.cu">
+      <Filter>count_x_v2</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="error">
       <UniqueIdentifier>{64dccacd-9fb7-4cf0-96c4-dacf701c70ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="count_x_v1">
+      <UniqueIdentifier>{167dc87f-9b05-4fb7-a070-5150d02e34aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="count_x_v2">
+      <UniqueIdentifier>{87f07037-7370-4c1f-9fcf-6e91ba9df83c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cuda_errors.cuh">
       <Filter>error</Filter>
+    </ClInclude>
+    <ClInclude Include="count_x_v1.cuh">
+      <Filter>count_x_v1</Filter>
+    </ClInclude>
+    <ClInclude Include="count_x_v2.cuh">
+      <Filter>count_x_v2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
