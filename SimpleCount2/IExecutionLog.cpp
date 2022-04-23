@@ -6,7 +6,7 @@ std::string IExecutionLog::str(DurationsMeasureUnit durationsMeasureUnit) {
 
 	std::ostringstream os;
 
-	for (IReportEvent e : getReport(durationsMeasureUnit)) {
+	for (ReportEvent e : getReport(durationsMeasureUnit)) {
 		os << e.str() << "\n";
 	}
 

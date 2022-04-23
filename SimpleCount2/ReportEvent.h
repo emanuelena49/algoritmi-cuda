@@ -13,27 +13,17 @@ std::string durationMeasureUnitStr(DurationsMeasureUnit mu);
 /// Evento del report. Contiene solo una chiave e un tipo.
 /// Può essere convertito in stringa.
 /// </summary>
-class IReportEvent 
-{
-public:
-	IReportEvent();
-
-	virtual std::string getEventKey();
-	virtual EventType getEventType();
-	virtual std::string str();
-};
-
-/// <summary>
-/// Implementazione concreta dell'evento del report. 
-/// </summary>
-class ReportEvent : public IReportEvent
+class ReportEvent
 {
 private:
 	std::string eventKey;
 	EventType eventType;
 
 public:
-	ReportEvent(std::string key, EventType type) : IReportEvent() {
+
+	ReportEvent() { }
+
+	ReportEvent(std::string key, EventType type) {
 		eventKey = key; 
 		eventType = type; 
 	}
@@ -50,16 +40,16 @@ public:
 /// dell'evento, espressa in una certa unità di misura.
 /// Anch'esso può essere convertito in stringa.
 /// </summary>
-class DurationDecoratorRecord : public IReportEvent
+class DurationDecoratorRecord : public ReportEvent
 {
 private:
-	IReportEvent reportEvent;
+	ReportEvent reportEvent;
 	double eventDuration; 
 	DurationsMeasureUnit durationMeasureUnit;
 
 public:
 
-	DurationDecoratorRecord(IReportEvent reportEvent, double intervalDuration, DurationsMeasureUnit durationUnit) {
+	DurationDecoratorRecord(ReportEvent reportEvent, double intervalDuration, DurationsMeasureUnit durationUnit) : ReportEvent() {
 		this->reportEvent = reportEvent;
 		eventDuration = intervalDuration;
 		durationMeasureUnit = durationUnit;
@@ -68,7 +58,8 @@ public:
 	double getEventDuration() { return eventDuration; }
 	DurationsMeasureUnit getDurationMeasureUnit() { return durationMeasureUnit; }
 
-	std::string getEventKey() { reportEvent.getEventKey(); }
+	std::string getEventKey() { return reportEvent.getEventKey(); }
+
 	EventType getEventType() { return reportEvent.getEventType(); }
 
 	std::string str();

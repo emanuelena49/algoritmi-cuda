@@ -1,3 +1,4 @@
+
 #pragma once
 #include "IExecutionLog.h"
 
@@ -17,6 +18,6 @@ public:
 
 	double getEventDuration(std::string eventKey, DurationsMeasureUnit measureUnit);
 
-	std::list<IReportEvent> getReport(DurationsMeasureUnit measureUnit);
+	std::list<ReportEvent> getReport(DurationsMeasureUnit measureUnit);
 };
 

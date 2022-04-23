@@ -1,3 +1,4 @@
+
 #pragma once
 #include "ReportEvent.h"
 
@@ -7,15 +8,15 @@
 /// <summary>
 /// Evento specifico de  
 /// </summary>
-class HostEvent : public IReportEvent {
+class HostEvent : public ReportEvent {
 
 private:
-	IReportEvent reportEvent;
+	ReportEvent reportEvent;
 	std::chrono::time_point<std::chrono::system_clock> timePoint;
 
 public:
 
-	HostEvent(std::string eventKey, EventType eventType){
+	HostEvent(std::string eventKey, EventType eventType) : ReportEvent() {
 
 		reportEvent = ReportEvent(eventKey, eventType);
 		timePoint = std::chrono::system_clock::now();
@@ -31,5 +32,3 @@ public:
 };
 
 double calculateDuration(HostEvent startEvent, HostEvent endEvent, DurationsMeasureUnit measureUnit);
-
-

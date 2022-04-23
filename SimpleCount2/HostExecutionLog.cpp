@@ -12,7 +12,7 @@ double HostExecutionLog::getEventDuration(std::string eventKey, DurationsMeasure
 	// recupero record di inizio e di fine
 	std::list<HostEvent>::iterator startIt, endIt, it;
 	startIt = endIt = events.end();
-	for (std::list<HostEvent>::iterator it; it != events.end(); ++it)
+	for (std::list<HostEvent>::iterator it = events.begin(); it != events.end(); ++it)
 	{
 		if ((*it).getEventKey() == eventKey && (*it).getEventType() == START) {
 			startIt = it;
@@ -25,52 +25,53 @@ double HostExecutionLog::getEventDuration(std::string eventKey, DurationsMeasure
 	// se non esiste un record di inizio e/o un record di fine, non posso calcolare la durata
 	if (startIt == events.end()) {
 		return -1;
-	} 
+	}
 
 	if (endIt == events.end()) {
 		return -1;
 	}
-	
+
 	return calculateDuration(*startIt, *endIt, measureUnit);
 }
 
 
-std::list<IReportEvent> HostExecutionLog::getReport(DurationsMeasureUnit measureUnit) {
+std::list<ReportEvent> HostExecutionLog::getReport(DurationsMeasureUnit measureUnit) {
 
-	std::list<IReportEvent> report = {};
+	std::list<ReportEvent> report = {};
 
 	// lista temporanea con gli eventi di start che uso per calcolare facilmente le durate
-	std::list<HostEvent> pendingStarts = {};
+	std::list<HostEvent*> pendingStarts = {};
 
 	for each (HostEvent e in events)
-	{	
+	{
 		if (e.getEventType() == START) {
 
 			// inserisco gli eventi di start in una lista temporanea che
 			// mi facilita il recupero per il calcolo delle durate
-			pendingStarts.push_front(e);
+			pendingStarts.push_front(&e);
 			report.push_back(e);
 		}
 		else if (e.getEventType() == END) {
 
 			// cerco un'eventuale evento di inizio salvato nella lista temporanea
-			std::list<HostEvent>::iterator eventualStartIt = pendingStarts.end();
+			std::list<HostEvent*>::iterator eventualStartIt = pendingStarts.end();
 
-			for (std::list<HostEvent>::iterator it; it != pendingStarts.end(); ++it)
+			for (std::list<HostEvent*>::iterator it = pendingStarts.begin(); it != pendingStarts.end(); ++it)
 			{
-				if ((*it).getEventKey() == (*it).getEventKey()) {
+				if ((**it).getEventKey() == e.getEventKey()) {
 					eventualStartIt = it;
 				}
 			}
 
-			
 			if (eventualStartIt != pendingStarts.end()) {
 
 				// se lo trovo, decoro il record con la durata dell'evento...
-				double duration = calculateDuration(*eventualStartIt, e, measureUnit);
-				report.push_back(DurationDecoratorRecord(e, duration, measureUnit));
+				const HostEvent startEvent = **eventualStartIt;
 
+				double duration = calculateDuration(startEvent, e, measureUnit);
+				report.push_back(DurationDecoratorRecord(e, duration, measureUnit));
 				// ... e rimuovo l'evento di inizio dalla lista temporanea
+
 				pendingStarts.remove(*eventualStartIt);
 			}
 			else {
@@ -83,5 +84,8 @@ std::list<IReportEvent> HostExecutionLog::getReport(DurationsMeasureUnit measure
 	}
 
 	return report;
+	
+	return {};
 }
+
 

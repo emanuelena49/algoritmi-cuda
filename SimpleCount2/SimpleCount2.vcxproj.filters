@@ -42,20 +42,17 @@
     <ClInclude Include="IExecutionLog.h">
       <Filter>performance</Filter>
     </ClInclude>
-    <ClInclude Include="HostExecutionLog.h">
-      <Filter>performance\host</Filter>
-    </ClInclude>
     <ClInclude Include="ReportEvent.h">
       <Filter>performance</Filter>
     </ClInclude>
     <ClInclude Include="HostEvent.h">
       <Filter>performance\host</Filter>
     </ClInclude>
+    <ClInclude Include="HostExecutionLog.h">
+      <Filter>performance\host</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HostExecutionLog.cpp">
-      <Filter>performance\host</Filter>
-    </ClCompile>
     <ClCompile Include="ReportEvent.cpp">
       <Filter>performance</Filter>
     </ClCompile>
@@ -63,6 +60,9 @@
       <Filter>performance</Filter>
     </ClCompile>
     <ClCompile Include="HostEvent.cpp">
+      <Filter>performance\host</Filter>
+    </ClCompile>
+    <ClCompile Include="HostExecutionLog.cpp">
       <Filter>performance\host</Filter>
     </ClCompile>
   </ItemGroup>
