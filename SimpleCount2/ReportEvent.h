@@ -26,7 +26,7 @@ public:
 /// <summary>
 /// Implementazione concreta dell'evento del report. 
 /// </summary>
-class ReportEvent : IReportEvent
+class ReportEvent : public IReportEvent
 {
 private:
 	std::string eventKey;
@@ -50,7 +50,7 @@ public:
 /// dell'evento, espressa in una certa unità di misura.
 /// Anch'esso può essere convertito in stringa.
 /// </summary>
-class DurationDecoratorRecord : IReportEvent 
+class DurationDecoratorRecord : public IReportEvent
 {
 private:
 	IReportEvent reportEvent;
