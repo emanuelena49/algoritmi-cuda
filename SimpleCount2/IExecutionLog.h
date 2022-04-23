@@ -11,7 +11,7 @@ public:
 	
 	virtual double getEventDuration(std::string eventKey, DurationsMeasureUnit measureUnit);
 
-	virtual std::list<ReportEvent> getReport(DurationsMeasureUnit measureUnit);
+	virtual std::list<IReportEvent> getReport(DurationsMeasureUnit measureUnit);
 
 	std::string str(DurationsMeasureUnit durationsMeasureUnit);
 

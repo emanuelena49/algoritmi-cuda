@@ -10,10 +10,21 @@ std::string eventTypeStr(EventType et);
 std::string durationMeasureUnitStr(DurationsMeasureUnit mu);
 
 /// <summary>
-/// Un generico evento del report. Contiene solo una chiave e un tipo.
+/// Evento del report. Contiene solo una chiave e un tipo.
 /// Può essere convertito in stringa.
 /// </summary>
-class ReportEvent
+class IReportEvent 
+{
+public:
+	virtual std::string getEventKey();
+	virtual EventType getEventType();
+	virtual std::string str();
+};
+
+/// <summary>
+/// Implementazione concreta dell'evento del report. 
+/// </summary>
+class ReportEvent : IReportEvent
 {
 private:
 	std::string eventKey;
