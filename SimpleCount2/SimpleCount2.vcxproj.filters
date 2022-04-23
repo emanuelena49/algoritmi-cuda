@@ -22,6 +22,12 @@
     <Filter Include="count_x_v2">
       <UniqueIdentifier>{87f07037-7370-4c1f-9fcf-6e91ba9df83c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="performance">
+      <UniqueIdentifier>{8f2db2c6-8c26-429d-a2a4-50f77f41079c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="performance\host">
+      <UniqueIdentifier>{048dc9d8-fe64-4f35-96ad-310f97a0a08f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cuda_errors.cuh">
@@ -33,5 +39,25 @@
     <ClInclude Include="count_x_v2.cuh">
       <Filter>count_x_v2</Filter>
     </ClInclude>
+    <ClInclude Include="IExecutionLog.h">
+      <Filter>performance</Filter>
+    </ClInclude>
+    <ClInclude Include="HostExecutionLog.h">
+      <Filter>performance\host</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportEvent.h">
+      <Filter>performance</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HostExecutionLog.cpp">
+      <Filter>performance\host</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportEvent.cpp">
+      <Filter>performance</Filter>
+    </ClCompile>
+    <ClCompile Include="IExecutionLog.cpp">
+      <Filter>performance</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
