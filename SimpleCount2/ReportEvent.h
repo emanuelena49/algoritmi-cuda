@@ -16,6 +16,8 @@ std::string durationMeasureUnitStr(DurationsMeasureUnit mu);
 class IReportEvent 
 {
 public:
+	IReportEvent();
+
 	virtual std::string getEventKey();
 	virtual EventType getEventType();
 	virtual std::string str();
@@ -31,7 +33,7 @@ private:
 	EventType eventType;
 
 public:
-	ReportEvent(std::string key, EventType type) { 
+	ReportEvent(std::string key, EventType type) : IReportEvent() {
 		eventKey = key; 
 		eventType = type; 
 	}
@@ -48,21 +50,26 @@ public:
 /// dell'evento, espressa in una certa unità di misura.
 /// Anch'esso può essere convertito in stringa.
 /// </summary>
-class ReportEndEvent : ReportEvent 
+class DurationDecoratorRecord : IReportEvent 
 {
 private:
+	IReportEvent reportEvent;
 	double eventDuration; 
 	DurationsMeasureUnit durationMeasureUnit;
 
 public:
-	ReportEndEvent(std::string key, double intervalDuration, DurationsMeasureUnit durationUnit) :
-		ReportEvent(key, END) {
+
+	DurationDecoratorRecord(IReportEvent reportEvent, double intervalDuration, DurationsMeasureUnit durationUnit) {
+		this->reportEvent = reportEvent;
 		eventDuration = intervalDuration;
 		durationMeasureUnit = durationUnit;
 	}
 
 	double getEventDuration() { return eventDuration; }
 	DurationsMeasureUnit getDurationMeasureUnit() { return durationMeasureUnit; }
+
+	std::string getEventKey() { reportEvent.getEventKey(); }
+	EventType getEventType() { return reportEvent.getEventType(); }
 
 	std::string str();
 };

@@ -34,10 +34,10 @@ std::string ReportEvent::str() {
 	return os.str();
 }
 
-std::string ReportEndEvent::str() {
+std::string DurationDecoratorRecord::str() {
 
 	std::ostringstream os;
-	os << ReportEvent::str() << 
+	os << this->reportEvent.str() << 
 		"\tDuration=" << 
 		getEventDuration() <<
 		durationMeasureUnitStr(getDurationMeasureUnit());
