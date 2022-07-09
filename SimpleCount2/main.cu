@@ -47,48 +47,84 @@ void randomArray(int* v, int n, int startValue, int endValue) {
 	}
 }
 
+void readArraySize(int *n) {
+	std::cout << "Inserisci la dimensione del vettore [-1 per usare opzioni di default]:\t";
+	std::cin >> *n;
+}
+
+void readCountAlgorithmParams(int *start, int *end, int *x) {
+
+	std::cout << "\nInserisci l'intervallo dei valori del vettore.\nValore minimo:\t";
+	std::cin >> *start;
+
+	std::cout << "Valore massimo:\t";
+	std::cin >> *end;
+
+	std::cout << "\nInserisci valore da cercare:\t";
+	std::cin >> *x;
+}
+
+void readParallelProgramOptions(int *nBlocks, int *threadsPerBlocks) {
+
+	std::cout << "\nInserisci numero di blocchi e thread per blocco da usare nella computazione parallela V2.\nNumero di Blocchi:\t";
+	std::cin >> *nBlocks;
+	std::cout << "Thread per blocco:\t";
+	std::cin >> *threadsPerBlocks;
+}
+
+void setDefaultCountAlgorithmOptions(int *n, 
+	int *start, int *end, int *x, 
+	int *nBlocks, int *threadsPerBlocks) {
+	
+	*n = 10000; 
+	*start = 0; *end = 10; *x = 5; 
+	*nBlocks = 8; *threadsPerBlocks = 128;
+
+	std::cout << "Caricamento opzioni di default: vettore casuale di " << *n
+		<< " elementi, compresi in {" << *start << ".." << *end << "-1}. Conta occorrenze di "
+		<< *x << ". Quanto posso scegliere, uso " << *nBlocks << " blocchi da "
+		<< *threadsPerBlocks << "thread ciascuno.";
+}
+
+void getAllCountParameters(int *n, 
+	int *start, int *end, int *x, 
+	int *nBlocks, int *threadsPerBlocks, 
+	bool useDefaultOptions) {
+
+	if (useDefaultOptions) {
+		setDefaultCountAlgorithmOptions(n, start, end, x, nBlocks, threadsPerBlocks);
+		return;
+	}
+
+	readArraySize(n);
+
+	if (*n <= 0) {
+		setDefaultCountAlgorithmOptions(n, start, end, x, nBlocks, threadsPerBlocks);
+		return;
+	}
+	
+	readCountAlgorithmParams(start, end, x);
+
+	readParallelProgramOptions(nBlocks, threadsPerBlocks);
+
+}
+
 int main() {
 
 	int n, start, end, x, nBlocks, threadsPerBlocks;
-	bool defaultOptions = false;
 
-	std::cout << "Inserisci la dimensione del vettore [-1 per usare opzioni di default]:\t";
-	std::cin >> n;
-	// n = 10000;
-	if (n<=0) {
-		n = 10000; start = 0; end = 10; x = 5; nBlocks = 8; threadsPerBlocks = 128;
-		defaultOptions = true;
+	getAllCountParameters(&n, &start, &end, &x, &nBlocks, &threadsPerBlocks, true);
 
-		std::cout << "Caricamento opzioni di default: vettore casuale di " << n
-			<< " elementi, compresi in {" << start << ".." << end << "-1}. Conta occorrenze di "
-			<< x << ". Quanto posso scegliere, uso " << nBlocks << " blocchi da "
-			<< threadsPerBlocks << "thread ciascuno.";
-	}
-	else {
-		std::cout << "\nInserisci l'intervallo dei valori del vettore.\nValore minimo:\t";
-		std::cin >> start;
-		// start = 0;
-		std::cout << "Valore massimo:\t";
-		std::cin >> end;
-		// end = 100;
-
-		std::cout << "\nInserisci valore da cercare:\t";
-		std::cin >> x;
-		// x = 0;
-
-		std::cout << "\nInserisci numero di blocchi e thread per blocco da usare nella computazione parallela V2.\nNumero di Blocchi:\t";
-		std::cin >> nBlocks;
-		std::cout << "Thread per blocco:\t";
-		std::cin >> threadsPerBlocks;
-	}
-
-	int* v = (int*)malloc(sizeof(int) * n);
+	int* v = (int*) malloc(sizeof(int) * n);
 	randomArray(v, n, start, end);
 
 	printf("\nNumero di occorrenze (seriale):%i\t", countOccurrenciesV0(v, n, x));
 	printf("\nNumero di occorrenze (parallelo v1):%i\t", countOccurrenciesV1(v, n, x));
-	printf("\nNumero di occorrenze (parallelo v2.1 - accesso coalescente):%i\t", countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, COALESCENCE));
-	printf("\nNumero di occorrenze (parallelo v2.2 - accesso stride):%i\t", countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, STRIDE));
+
+	printf("\nNumero di occorrenze (parallelo v2.1 - accesso coalescente):%i\t", 
+		countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, COALESCENCE));
+	printf("\nNumero di occorrenze (parallelo v2.2 - accesso stride):%i\t", 
+		countOccurrenciesV2(v, n, x, nBlocks, threadsPerBlocks, STRIDE));
 
 	return 0;
 }
