@@ -86,6 +86,16 @@
     <ClInclude Include="count_x_v1.cuh" />
     <ClInclude Include="count_x_v2.cuh" />
     <ClInclude Include="cuda_errors.cuh" />
+    <ClInclude Include="HostEvent.h" />
+    <ClInclude Include="ReportEvent.h" />
+    <ClInclude Include="HostExecutionLog.h" />
+    <ClInclude Include="IExecutionLog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HostEvent.cpp" />
+    <ClCompile Include="IExecutionLog.cpp" />
+    <ClCompile Include="ReportEvent.cpp" />
+    <ClCompile Include="HostExecutionLog.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
