@@ -9,8 +9,6 @@
 
 
 
-
-
 /// <summary>
 /// Calcola quanti blocchi si deve lanciare per processare 
 /// un vettore di lungh n, con threadsPerBlock thread per blocco.

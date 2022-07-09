@@ -22,6 +22,9 @@
     <Filter Include="count_x_v2">
       <UniqueIdentifier>{87f07037-7370-4c1f-9fcf-6e91ba9df83c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="logger">
+      <UniqueIdentifier>{aac44f3a-b002-45c2-9856-bd8042c00c84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cuda_errors.cuh">
@@ -33,5 +36,13 @@
     <ClInclude Include="count_x_v2.cuh">
       <Filter>count_x_v2</Filter>
     </ClInclude>
+    <ClInclude Include="host_logger.h">
+      <Filter>logger</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="host_logger.cpp">
+      <Filter>logger</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

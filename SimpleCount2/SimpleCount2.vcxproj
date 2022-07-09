@@ -86,6 +86,10 @@
     <ClInclude Include="count_x_v1.cuh" />
     <ClInclude Include="count_x_v2.cuh" />
     <ClInclude Include="cuda_errors.cuh" />
+    <ClInclude Include="host_logger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="host_logger.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
